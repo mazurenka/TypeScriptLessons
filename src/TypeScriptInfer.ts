@@ -82,6 +82,16 @@ let b: HipHopType<"photo"> = {
     small: ""
 }
 
+const obj = {
+    a : {name: "Dimych"},
+    b : {age: 55},
+    c : {site: {title: "www"}}
+}
+
+type SomeType<T> = T extends {[key: string] : infer U} ? U : never
+
+const hipHop: SomeType<typeof obj> = {name: '22'}
+
 
 
 
