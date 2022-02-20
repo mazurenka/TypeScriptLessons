@@ -1,6 +1,6 @@
 import React from "react";
 
-type User = {
+type UserType = {
     name: string
     age: number
 }
@@ -16,7 +16,7 @@ type ServerResponseType<D> = {
     data: D
 }
 
-const response1 : ServerResponseType<User>= {
+const response1 : ServerResponseType<UserType>= {
     errorCode: 1,
     messages: ['ww', 'ss'],
     data: {
@@ -34,23 +34,54 @@ const response2 : ServerResponseType<PhotoType>= {
     }
 }
 
+type Nullable<T> = null | T
+
 const initial = {
     age: 10,
     name: 'Vasya',
-    photo: null as PhotoType | null
+    users: null as Nullable<UserType>,
+    photo: null as Nullable<PhotoType>
 }
 
 type StateType = typeof initial
 
-const reducer = (state: StateType , action: any) => {
+// type ActionCreator1Type = ReturnType<typeof ActionCreator1>
+// type ActionCreator2Type = ReturnType<typeof ActionCreator2>
+// const action1: ActionCreator1Type = {type: 'SET_AGE', age: 22}
+// const action2: ActionCreator2Type = {type: "SET_NAME", name: "Andre"}
 
-    state.photo= {
-        large: '',
-        small: ''
+type ActionsTypes = ReturnType<typeof ActionCreator1> | ReturnType<typeof ActionCreator2>
+
+const reducer = (state: StateType , action: ActionsTypes) => {
+    switch (action.type) {
+        case "SET_AGE":
+            return  {...state, age: action.age}
+        case "SET_NAME":
+            return {...state, name: action.name}
     }
+
 
     return state
 }
+
+
+
+const ActionCreator1 = (age: number) => ({type: 'SET_AGE', age} as const)
+const ActionCreator2 = (name: string) => ({type: 'SET_NAME', name} as const)
+
+
+type HipHopType<T> = T extends "user" ? UserType : PhotoType
+
+let a: HipHopType<"user"> = {
+    name: 'Dmitry',
+    age: 44
+}
+
+let b: HipHopType<"photo"> = {
+    large: "22",
+    small: ""
+}
+
 
 
 
