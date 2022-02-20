@@ -1,5 +1,3 @@
-import React from "react";
-
 type UserType = {
     name: string
     age: number
@@ -16,7 +14,7 @@ type ServerResponseType<D> = {
     data: D
 }
 
-const response1 : ServerResponseType<UserType>= {
+const response1: ServerResponseType<UserType> = {
     errorCode: 1,
     messages: ['ww', 'ss'],
     data: {
@@ -25,7 +23,7 @@ const response1 : ServerResponseType<UserType>= {
     }
 }
 
-const response2 : ServerResponseType<PhotoType>= {
+const response2: ServerResponseType<PhotoType> = {
     errorCode: 1,
     messages: ['ww', 'ss'],
     data: {
@@ -50,12 +48,12 @@ type StateType = typeof initial
 // const action1: ActionCreator1Type = {type: 'SET_AGE', age: 22}
 // const action2: ActionCreator2Type = {type: "SET_NAME", name: "Andre"}
 
-type ActionsTypes = ReturnType<typeof ActionCreator1> | ReturnType<typeof ActionCreator2>
+type ActionsTypes = ReturnType<PropertiesType<typeof actions>>
 
-const reducer = (state: StateType , action: ActionsTypes) => {
+const reducer = (state: StateType, action: ActionsTypes) => {
     switch (action.type) {
         case "SET_AGE":
-            return  {...state, age: action.age}
+            return {...state, age: action.age}
         case "SET_NAME":
             return {...state, name: action.name}
     }
@@ -63,11 +61,6 @@ const reducer = (state: StateType , action: ActionsTypes) => {
 
     return state
 }
-
-
-
-const ActionCreator1 = (age: number) => ({type: 'SET_AGE', age} as const)
-const ActionCreator2 = (name: string) => ({type: 'SET_NAME', name} as const)
 
 
 type HipHopType<T> = T extends "user" ? UserType : PhotoType
@@ -83,14 +76,21 @@ let b: HipHopType<"photo"> = {
 }
 
 const obj = {
-    a : {name: "Dimych"},
-    b : {age: 55},
-    c : {site: {title: "www"}}
+    a: {name: "Dimych"},
+    b: {age: 55},
+    c: {site: {title: "www"}}
 }
 
-type SomeType<T> = T extends {[key: string] : infer U} ? U : never
+type PropertiesType<T> = T extends { [key: string]: infer U } ? U : never
 
-const hipHop: SomeType<typeof obj> = {name: '22'}
+const hipHop: ReturnType<PropertiesType<typeof actions>> = {type: "SET_NAME", name: '12'}
+
+const actions = {
+    ActionCreator1: (age: number) => ({type: 'SET_AGE', age} as const),
+    ActionCreator2: (name: string) => ({type: 'SET_NAME', name} as const)
+}
+
+
 
 
 
