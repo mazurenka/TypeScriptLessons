@@ -1,3 +1,5 @@
+import React from "react";
+
 type UserType = {
     name: string
     age: number
